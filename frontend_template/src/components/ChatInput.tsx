@@ -30,6 +30,7 @@ const ChatInput: React.FC<ChatinputProps> = ({onSend}) => {
         const target = e.target as HTMLInputElement & {
             files: FileList;
         }
+
         setSelectedFile(target.files[0]);
     };
 
