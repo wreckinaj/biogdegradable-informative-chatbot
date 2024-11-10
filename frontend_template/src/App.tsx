@@ -8,8 +8,8 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<LandingPage/>}/>
-                <Route path="chat" element={<ChatPage/>}/>
+                <Route path = "/" element={<LandingPage/>}/>
+                <Route path = "chat" element={<ChatPage/>}/>
             </Routes>
         </Router>
     );

@@ -23,3 +23,16 @@
 .chat-input button:hover {
     background-color: #0056b3;
 }
+
+.upload-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;          /* Size of the icon button */
+    height: 36px;
+    cursor: pointer;      /* Shows pointer cursor to indicate it's clickable */
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;   /* Makes the icon circular */
+    margin-right: 10px;
+}

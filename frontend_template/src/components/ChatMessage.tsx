@@ -10,7 +10,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({message}) => {
     return (
         <div className={`chat-message ${message.sender === 'user' ? 'chat-message-user' : 'chat-message-bot'}`}>
             <div className={`message-bubble ${message.sender}`}>
-                {message.text}
+                {message.content}
             </div>
         </div>
     )
