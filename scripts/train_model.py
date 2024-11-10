@@ -66,4 +66,10 @@ test_dataset = get_image_dataset(test_dir).batch(batch_size).prefetch(tf.data.AU
 # Print confirmation that datasets are prepared
 print("Datasets are prepared and ready for training and evaluation.")
 
-model.save('./model/model.h5')
+# Ensure the model directory exists
+model_dir = './model'
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
+
+# Save the model
+model.save(os.path.join(model_dir, 'model.h5'))  # Save the model to ./model/model.h5

@@ -3,12 +3,10 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
 
-# Define the model path (adjust as needed)
-MODEL_PATH = './model/model.h5'  # Path to your saved model
-
 def load_model():
     """Loads the trained model (this should be done once when the app starts)."""
-    model = tf.keras.models.load_model(MODEL_PATH)
+    model_path = '/model'
+    model = load_model(model_path)
     return model
 
 def preprocess_image(image_path):

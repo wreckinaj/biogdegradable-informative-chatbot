@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import tensorflow as tf
 from model import load_model, predict_class, preprocess_image
 from transformers import LlamaTokenizer, LlamaForCausalLM
+import openai
 
 app = Flask(__name__)
 
@@ -19,16 +20,18 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size (16 MB)
 
-# Load pre-trained LLaMA model and tokenizer
-tokenizer = LlamaTokenizer.from_pretrained("huggingface/llama-7b")
-llama_model = LlamaForCausalLM.from_pretrained("huggingface/llama-7b")
+# Set the API key for OpenAI (or NVIDIA in this case)
+openai.api_key = "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"  # Replace with your actual API key
 
 def answer_question(question):
-    # Encode the question and generate a response
-    inputs = tokenizer(question, return_tensors="pt")
-    outputs = llama_model.generate(inputs["input_ids"], max_length=50)
-    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return answer
+    try:
+        # Encode the question and generate a response
+        inputs = tokenizer(question, return_tensors="pt")
+        outputs = llama_model.generate(inputs["input_ids"], max_length=50)
+        answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return answer
+    except Exception as e:
+        return f"Error processing the question: {str(e)}"
 
 # Load the trained model (do this once to avoid loading it on every request)
 model = load_model()
@@ -58,6 +61,40 @@ def predict():
         
         # Return the prediction result
         return jsonify({'prediction': prediction})
+
+# Route for handling general questions
+@app.route('/ask', methods=['POST'])
+def ask():
+    # Ensure the request contains JSON
+    data = request.get_json()
+
+    if 'question' not in data:
+        return jsonify({'error': 'No question provided'}), 400
+
+    question = data['question']
+
+    # Make the API call to NVIDIA's LLaMA model
+    try:
+        # Call the LLaMA model using the OpenAI API client
+        completion = client.chat.completions.create(
+            model="nvidia/llama-3.1-nemotron-70b-instruct",
+            messages=[{"role": "user", "content": question}],
+            temperature=0.5,
+            top_p=1,
+            max_tokens=1024,
+            stream=True
+        )
+
+        # Collect the response from the model
+        answer = ""
+        for chunk in completion:
+            if chunk.choices[0].delta.content is not None:
+                answer += chunk.choices[0].delta.content
+
+        return jsonify({'answer': answer.strip()})
+
+    except Exception as e:
+        return jsonify({'error': f"An error occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
