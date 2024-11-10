@@ -2,7 +2,7 @@ import os
 import shutil
 import random
 
-def sample_existing_dataset(source_dir='./data/kaggle_dataset/', sampled_dir='./data/kaggle_dataset_sampled/', sample_size=100):
+def sample_existing_dataset(source_dir='../data/kaggle_dataset/', sampled_dir='../data/kaggle_dataset_sampled/', sample_size=100):
     # Define the expected directory structure for classes
     expected_dirs = ['TEST', 'TRAIN.1', 'TRAIN.2', 'TRAIN.3', 'TRAIN.4']
     expected_subdirs = ['B', 'N']  # Biodegradable and Non-biodegradable subfolders
