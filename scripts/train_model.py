@@ -65,3 +65,5 @@ test_dataset = get_image_dataset(test_dir).batch(batch_size).prefetch(tf.data.AU
 
 # Print confirmation that datasets are prepared
 print("Datasets are prepared and ready for training and evaluation.")
+
+model.save('./model/model.h5')
