@@ -5,6 +5,7 @@ import tensorflow as tf
 from model import load_model, predict_class, preprocess_image
 from transformers import LlamaTokenizer, LlamaForCausalLM
 import openai
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size (16 MB)
 
 # Set the API key for OpenAI (or NVIDIA in this case)
-openai.api_key = "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"  # Replace with your actual API key
+openai.api_key = os.getenv("openai_api_key")
 
 def answer_question(question):
     try:
