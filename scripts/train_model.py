@@ -6,7 +6,7 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array # For im
 from tensorflow.data import Dataset  # To create dataset
 
 # Root Directory of Input (Update this path based on your directory structure)
-main_dir = './data/kaggle_dataset/'  # Base directory where 'TRAIN.1', 'TRAIN.2', 'TRAIN.3', 'TRAIN.4', 'TEST' are located.
+main_dir = './data/kaggle_dataset_sampled/'  # Base directory where 'TRAIN.1', 'TRAIN.2', 'TRAIN.3', 'TRAIN.4', 'TEST' are located.
 train_dir = [os.path.join(main_dir, 'TRAIN.{}'.format(d)) for d in range(1, 5)]  # Directories for training subsets (TRAIN.1, TRAIN.2, TRAIN.3, TRAIN.4)
 test_dir = os.path.join(main_dir, 'TEST')  # Directory for the test set (TEST)
 
