@@ -6,12 +6,12 @@ interface Articles {
     title: string,
     description: string,
     url: string,
-    sources?: { name: string };
+    source?: { id?: string | null; name: string };
 }
 
 const ArticlePage: React.FC = () => {
     const [articles, setArticles] = useState<Articles[]>([]);
-    const topics = ["composting", "Green Tech", "sustainable"];
+    const topics = ["composting", "Green Tech", "biodegradable"];
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -27,6 +27,7 @@ const ArticlePage: React.FC = () => {
                     console.log(`Error fetching articles for topics "${topic}": `, error);
                 }
             }
+            console.log(allArticles.pop())
 
             setArticles(allArticles);
         };
@@ -44,7 +45,9 @@ const ArticlePage: React.FC = () => {
                     articles.map((article, index) => (
                         <div key={index} className="article-card">
                             <h2>{article.title}</h2>
-                            <p><strong>Source:</strong> {article.sources?.name || "Unknown source"}</p>
+                            <p>
+                                <strong>Source:</strong> {article.source?.name || "Unknown Source"}
+                            </p>
                             <p>{article.description}</p>
                             <a href={article.url} target="_blank" rel="noopener noreferrer">
                                 Read More

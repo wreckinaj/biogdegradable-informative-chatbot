@@ -6,6 +6,7 @@ export const fetchNews = async (query: string) => {
 
     try {
         const response = await axios.get(url);
+        console.log("API response:", response.data.articles)
         return response.data.articles || [];
     } catch (error) {
         return [];
