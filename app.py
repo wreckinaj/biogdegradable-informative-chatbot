@@ -1,13 +1,15 @@
 import os
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 from model import load_model, predict_class, preprocess_image
 from transformers import LlamaTokenizer, LlamaForCausalLM
 import openai
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Define the upload folder and allowed extensions
 UPLOAD_FOLDER = './uploads'
@@ -20,6 +22,10 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Configure the Flask app
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size (16 MB)
+
+# Define the path to your React build folder
+REACT_BUILD_DIR = os.path.join(os.getcwd(), 'frontend_template', 'build')
+print("Serving React files from:", REACT_BUILD_DIR)
 
 # Set the API key for OpenAI (or NVIDIA in this case)
 openai.api_key = os.getenv("openai_api_key")
@@ -42,7 +48,11 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # This will render a simple file upload form
+    return send_from_directory(REACT_BUILD_DIR, 'index.html')  # This will render a simple file upload form
+
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(REACT_BUILD_DIR, path)
 
 @app.route('/predict', methods=['POST'])
 def predict():
