@@ -34,6 +34,12 @@ const ChatInput: React.FC<ChatinputProps> = ({onSend}) => {
         setSelectedFile(target.files[0]);
     };
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSend();
+        }
+    };
+
     return (
         <div className="chat-input">
             <label htmlFor="file-upload" className="upload-icon">
@@ -41,7 +47,7 @@ const ChatInput: React.FC<ChatinputProps> = ({onSend}) => {
             </label>
             <input type="file" id = "file-upload" onChange={handleFileChange} style={{display: 'none'}} disabled={!!input}/>
 
-            <input type="text" value={input} onChange={handleInputChange} placeholder="Type your message"
+            <input type="text" value={input} onKeyDown={handleKeyPress} onChange={handleInputChange} placeholder="Type your message"
                    className="Prompt_box" disabled={!!selectedFile}/>
             <button onClick={handleSend} className="Prompt_send">Send</button>
         </div>
