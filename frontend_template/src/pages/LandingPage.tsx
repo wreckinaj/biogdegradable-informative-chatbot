@@ -9,6 +9,9 @@ const LandingPage: React.FC = () => {
             <Link to="/chat">
                 <button>Start Chatting</button>
             </Link>
+            <Link to="/articles">
+                <button>Explore Articles</button>
+            </Link>
         </div>
     );
 };
